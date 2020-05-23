@@ -13,6 +13,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.test.weather.BuildConfig
 import ru.test.weather.data.network.IApiService
+import ru.test.weather.data.network.interceptors.WeatherAuthInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
@@ -50,6 +51,8 @@ class NetModule {
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
+
+        okHttpBuilder.addInterceptor(WeatherAuthInterceptor(BuildConfig.API_KEY))
 
         if (BuildConfig.CHUCK_ENABLE)
             okHttpBuilder.addInterceptor(ChuckInterceptor(context))

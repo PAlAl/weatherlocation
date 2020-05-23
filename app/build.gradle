@@ -20,11 +20,13 @@ android {
     buildTypes {
         debug {
             buildConfigField "Boolean", "CHUCK_ENABLE", 'true'
-            buildConfigField "String", "SERVER_URL", '""'
+            buildConfigField "String", "SERVER_URL", '"https://api.openweathermap.org/data/2.5/"'
+            buildConfigField "String", "API_KEY", '"4e3e17709ac2bf2ca047ed8f1a6002e7"'
         }
         release {
             buildConfigField "Boolean", "CHUCK_ENABLE", 'false'
-            buildConfigField "String", "SERVER_URL", '""'
+            buildConfigField "String", "SERVER_URL", '"https://api.openweathermap.org/data/2.5/"'
+            buildConfigField "String", "API_KEY", '"4e3e17709ac2bf2ca047ed8f1a6002e7"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

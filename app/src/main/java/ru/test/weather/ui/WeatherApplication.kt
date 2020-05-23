@@ -2,6 +2,7 @@ package ru.test.weather.ui
 
 import android.app.Application
 import ru.test.weather.di.AppComponent
+import ru.test.weather.di.ContextModule
 import ru.test.weather.di.DaggerAppComponent
 
 class WeatherApplication : Application() {
@@ -10,7 +11,7 @@ class WeatherApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        component = DaggerAppComponent.builder().build()
+        component = DaggerAppComponent.builder().contextModule(ContextModule(this)).build()
     }
 
     fun getComponent(): AppComponent {
