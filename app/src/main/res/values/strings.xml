@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Weather</string>
+
+    <!--Weather Screen-->
+    <string name="weather_toolbar_menu_refresh_title">Refresh</string>
+    <string name="weather_toolbar_title">Weather today</string>
+
 </resources>
