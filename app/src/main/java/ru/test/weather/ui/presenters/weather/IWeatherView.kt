@@ -1,4 +1,9 @@
 package ru.test.weather.ui.presenters.weather
 
-interface IWeatherView {
+import moxy.MvpView
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
+
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface IWeatherView: MvpView {
 }
