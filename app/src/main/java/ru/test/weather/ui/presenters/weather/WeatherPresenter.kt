@@ -17,14 +17,13 @@ import ru.test.weather.ui.global.eventBus.permissions.CheckPermissionEvent
 import ru.test.weather.ui.global.eventBus.permissions.PermissionResultEvent
 import ru.test.weather.ui.global.eventBus.permissions.RequestPermissionEvent
 import ru.test.weather.ui.presenters.BasePresenter
+import ru.test.weather.ui.views.weather.models.WeatherNoDataViewModel
 import ru.test.weather.ui.views.weather.models.WeatherViewModelMapper
 import javax.inject.Inject
 import javax.inject.Named
 
-class WeatherPresenter @Inject constructor(private val interactor: IWeatherInteractor,
-                                           private val schedulers: ISchedulersProvider,
-                                           @Named("IMAGES_URL") private val imagesUrl: String,
-                                           private val eventBus: IBus,
+class WeatherPresenter @Inject constructor(private val interactor: IWeatherInteractor, private val schedulers: ISchedulersProvider,
+                                           @Named("IMAGES_URL") private val imagesUrl: String, private val eventBus: IBus,
                                            private val busNotifier: IBusNotifier) : BasePresenter<IWeatherView>() {
 
     private val imageSizePostfix = "@4x"
@@ -37,6 +36,7 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
                     if (event.requestCode == LOCATION_PERMISSIONS_REQUEST_CODE)
                         if (event.grantResult == PackageManager.PERMISSION_GRANTED) {
                         } else {
+                            showNoLocationPermissionError()
                         }
                 }
             }
@@ -78,18 +78,27 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
                 .subscribeDispose({
                     when (it) {
                         is Optional.Some -> updateData(it.data)
-                        is Optional.None -> updateData(null)
+                        is Optional.None -> showNoDataError()
                     }
                 }, {
-                    updateData(null)
+                    showNoDataError()
                 })
     }
 
-    private fun updateData(model: Weather?) {
+    private fun showNoLocationPermissionError() {
+        updateData(null, WeatherNoDataViewModel(R.string.weather_no_location_permission_title,
+                R.string.weather_no_location_permission_action) { viewState.openSettings() })
+    }
+
+    private fun showNoDataError() {
+        updateData(null, WeatherNoDataViewModel(R.string.weather_no_data_title, R.string.weather_no_data_action) { onRefreshClick() })
+    }
+
+    private fun updateData(model: Weather?, noDataModel: WeatherNoDataViewModel? = null) {
         model?.let {
             viewState.setData(WeatherViewModelMapper.toViewModel(it, getImageRotateByWindDirection(it.windDirection),
                     getImageUrl(it.iconPath), getTemperatureUnitIconResource(it.temperatureUnit)))
-        } ?: viewState.setData(null)
+        } ?: viewState.setData(null, noDataModel)
     }
 
     private fun getImageRotateByWindDirection(windDirection: WindDirection): Float {

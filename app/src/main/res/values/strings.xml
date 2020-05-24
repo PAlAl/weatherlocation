@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Weather</string>
 
-    <string name="gps_request_dialog_title">Разрешить ресурсу "Погода" доступ к Вашей геопозиции?</string>
+    <string name="gps_request_dialog_title">Разрешить ресурсу "Погода" доступ к вашей геопозиции?</string>
     <string name="gps_request_dialog_message">Так мы сможем определить погоду в вашем регионе</string>
     <string name="gps_request_dialog_cancel">Нет</string>
     <string name="gps_request_dialog_ok">Да</string>
@@ -10,7 +10,9 @@
     <string name="weather_toolbar_menu_refresh_title">Обновить</string>
     <string name="weather_toolbar_title">Погода</string>
     <string name="weather_no_data_title">Не удалось получить данные</string>
-    <string name="weather_no_data_refresh_title">Обновить</string>
+    <string name="weather_no_data_action">Обновить</string>
+    <string name="weather_no_location_permission_title">Не удалось получить разрешение на определение геопозиции</string>
+    <string name="weather_no_location_permission_action">Настройки приложения</string>
 
     <!--WindDirection enum-->
     <string name="enum_wind_direction_northern">c</string>
