@@ -1,6 +1,5 @@
 package ru.test.weather.data.models.weather.mappers
 
-import org.joda.time.DateTime
 import ru.test.weather.data.models.weather.db.WeatherDb
 import ru.test.weather.data.models.weather.response.WeatherByCoordinatesResponse
 import ru.test.weather.domain.models.weather.Weather

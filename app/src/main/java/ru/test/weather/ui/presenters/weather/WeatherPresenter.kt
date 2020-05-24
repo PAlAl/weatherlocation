@@ -24,8 +24,8 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
         loadWeather()
     }
 
-    private fun loadWeather() {
-        interactor.loadWeather(WeatherPoint(55.06179327422091F, 38.74023914337159F))
+    private fun loadWeather(isRefresh: Boolean = false) {
+        interactor.loadWeather(WeatherPoint(55.06179327422091F, 38.74023914337159F), isRefresh)
                 .observeOn(schedulers.ui())
                 .doOnSubscribe {
                     viewState.changeBlockingProgress(true)
@@ -76,6 +76,6 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
     }
 
     fun onRefreshClick() {
-
+        loadWeather(true)
     }
 }

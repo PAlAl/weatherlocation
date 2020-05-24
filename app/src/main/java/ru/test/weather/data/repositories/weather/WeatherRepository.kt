@@ -28,4 +28,16 @@ class WeatherRepository @Inject constructor(private val api: IApiService, privat
                     } ?: Optional.None
                 }
     }
+
+    override fun getWeatherFromCache(): Optional<Weather> {
+        return cache.getWeatherDb()?.let {
+            Optional.Some(WeatherMapper.fromDbModel(it))
+        } ?: Optional.None
+    }
+
+    override fun getLastLoadWeatherDateTime(): Optional<DateTime> {
+        return cache.getLastLoadDateTime()?.let {
+            Optional.Some(it)
+        } ?: Optional.None
+    }
 }

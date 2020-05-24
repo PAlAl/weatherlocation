@@ -38,6 +38,7 @@ class WeatherFragment : BaseFragment(R.layout.fragment_weather), IWeatherView {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.refresh -> {
+                    presenter.onRefreshClick()
                 }
             }
             true
