@@ -2,9 +2,9 @@ package ru.test.weather.domain.models.weather
 
 import ru.test.weather.domain.models.weather.types.*
 
-data class Weather(val id: Short, private val weatherUnitFormat: WeatherUnitFormat,
+data class Weather(val id: Short, val weatherUnitFormat: WeatherUnitFormat,
                    val type: WeatherType, val description: String, val temperature: Float,
-                   val iconPath: String, val windSpeed: Float, private val degrees: Float) {
+                   val iconPath: String, val windSpeed: Float, val degrees: Float) {
 
     val windDirection: WindDirection
         get() = when {

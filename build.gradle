@@ -6,6 +6,7 @@ buildscript {
     ext.dagger_version = '2.26'
     ext.retrofit_version = '2.6.4'
     ext.glide_version = '4.9.0'
+    ext.joda_time_version = '2.10.1'
     repositories {
         google()
         jcenter()
@@ -14,6 +15,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "io.realm:realm-gradle-plugin:6.1.0"
     }
 }
 
