@@ -1,4 +1,4 @@
-package ru.test.weather.ui.global.managers
+package ru.test.weather.ui.global.sharedPreferences
 
 import android.content.Context
 import android.content.SharedPreferences
