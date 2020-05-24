@@ -4,6 +4,8 @@
     <!--Weather Screen-->
     <string name="weather_toolbar_menu_refresh_title">Обновить</string>
     <string name="weather_toolbar_title">Погода</string>
+    <string name="weather_no_data_title">Не удалось получить данные</string>
+    <string name="weather_no_data_refresh_title">Обновить</string>
 
     <!--WindDirection enum-->
     <string name="enum_wind_direction_northern">c</string>

@@ -4,6 +4,7 @@ import ru.test.weather.R
 import ru.test.weather.domain.interactors.weather.IWeatherInteractor
 import ru.test.weather.domain.models.Optional
 import ru.test.weather.domain.models.location.WeatherPoint
+import ru.test.weather.domain.models.weather.Weather
 import ru.test.weather.domain.models.weather.types.WeatherTemperatureUnit
 import ru.test.weather.domain.models.weather.types.WindDirection
 import ru.test.weather.domain.system.ISchedulersProvider
@@ -34,16 +35,19 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
                 }
                 .subscribeDispose({
                     when (it) {
-                        is Optional.Some -> {
-                            viewState.setData(
-                                    WeatherViewModelMapper.toViewModel(it.data, getImageRotateByWindDirection(it.data.windDirection),
-                                            getImageUrl(it.data.iconPath), getTemperatureUnitIconResource(it.data.temperatureUnit))
-                            )
-                        }
+                        is Optional.Some -> updateData(it.data)
+                        is Optional.None -> updateData(null)
                     }
                 }, {
-                    val a = it
+                    updateData(null)
                 })
+    }
+
+    private fun updateData(model: Weather?) {
+        model?.let {
+            viewState.setData(WeatherViewModelMapper.toViewModel(it, getImageRotateByWindDirection(it.windDirection),
+                    getImageUrl(it.iconPath), getTemperatureUnitIconResource(it.temperatureUnit)))
+        } ?: viewState.setData(null)
     }
 
     private fun getImageRotateByWindDirection(windDirection: WindDirection): Float {

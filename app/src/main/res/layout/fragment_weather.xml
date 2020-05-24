@@ -17,13 +17,16 @@
         app:titleMarginStart="24dp" />
 
     <ScrollView
+        android:id="@+id/weather_data_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingLeft="@dimen/gutter_size"
         android:paddingRight="@dimen/gutter_size"
         android:scrollbarStyle="outsideInset"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -43,9 +46,9 @@
 
             <TextView
                 android:id="@+id/weather_temperature_value"
-                style="@style/TextAppearance.MaterialComponents.Headline1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/weather_image"
@@ -72,7 +75,6 @@
 
             <TextView
                 android:id="@+id/weather_wind_value"
-                style="@style/TextAppearance.MaterialComponents.Headline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_size"
@@ -80,17 +82,18 @@
                 android:maxWidth="70dp"
                 android:paddingTop="@dimen/margin_size"
                 android:paddingBottom="@dimen/margin_size"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 app:layout_constraintRight_toLeftOf="@+id/weather_wind_unit"
                 app:layout_constraintTop_toBottomOf="@+id/weather_temperature_value"
                 tools:text="15" />
 
             <TextView
                 android:id="@+id/weather_wind_unit"
-                style="@style/TextAppearance.MaterialComponents.Headline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/gutter_size"
                 android:maxWidth="70dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 app:layout_constraintBaseline_toBaselineOf="@id/weather_wind_value"
                 app:layout_constraintRight_toLeftOf="@+id/weather_wind_divider"
                 tools:text="m/s" />
@@ -117,14 +120,46 @@
 
             <TextView
                 android:id="@+id/weather_wind_direction"
-                style="@style/TextAppearance.MaterialComponents.Headline5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 app:layout_constraintBaseline_toBaselineOf="@id/weather_wind_value"
                 app:layout_constraintLeft_toRightOf="@+id/weather_wind_direction_image"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:text="n" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/weather_no_data_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weather_no_data_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/weather_no_data_refresh_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_margin_size"
+        android:text="@string/weather_toolbar_menu_refresh_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textColor="?attr/colorAccent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weather_no_data_title" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/weather_no_data_group"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:constraint_referenced_ids="weather_no_data_title, weather_no_data_refresh_title"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

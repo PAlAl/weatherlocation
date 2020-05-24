@@ -7,6 +7,6 @@ import ru.test.weather.ui.views.weather.models.WeatherViewModel
 
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface IWeatherView : MvpView {
-    fun setData(model: WeatherViewModel)
+    fun setData(model: WeatherViewModel?)
     fun changeBlockingProgress(isShow: Boolean)
 }
