@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Weather</string>
 
+    <string name="gps_request_dialog_title">Разрешить ресурсу "Погода" доступ к Вашей геопозиции?</string>
+    <string name="gps_request_dialog_message">Так мы сможем определить погоду в вашем регионе</string>
+    <string name="gps_request_dialog_cancel">Нет</string>
+    <string name="gps_request_dialog_ok">Да</string>
+
     <!--Weather Screen-->
     <string name="weather_toolbar_menu_refresh_title">Обновить</string>
     <string name="weather_toolbar_title">Погода</string>
