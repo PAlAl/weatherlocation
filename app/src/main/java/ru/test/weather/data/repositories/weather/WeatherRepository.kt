@@ -17,8 +17,8 @@ class WeatherRepository @Inject constructor(private val api: IApiService, privat
     override fun loadWeather(locationPoint: WeatherPoint, unitFormat: WeatherUnitFormat, language: Language): Single<Optional<Weather>> {
         return api.getWeatherByCoordinates(locationPoint.latitude, locationPoint.longitude, unitFormat.toString(), language.toString())
                 .subscribeOn(schedulers.io())
-                .map {
-                    WeatherMapper.fromResponse(it, unitFormat)?.let {
+                .map { weatherByCoordinatesResponse ->
+                    WeatherMapper.fromResponse(weatherByCoordinatesResponse, unitFormat)?.let {
                         Optional.Some(it)
                     } ?: Optional.None
                 }

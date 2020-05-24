@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction()
-                .add(R.id.container, WeatherFragment())
+                .replace(R.id.container, WeatherFragment())
                 .commit()
     }
 }

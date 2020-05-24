@@ -3,7 +3,6 @@ package ru.test.weather.data.models.weather.mappers
 import ru.test.weather.data.models.weather.response.WeatherByCoordinatesResponse
 import ru.test.weather.domain.models.weather.Weather
 import ru.test.weather.domain.models.weather.types.WeatherUnitFormat
-import ru.test.weather.domain.models.weather.types.WindDirection
 
 object WeatherMapper {
 
@@ -13,7 +12,7 @@ object WeatherMapper {
 
         val weather = model.weathers.first()
 
-        return Weather(weather.id, weather.type, weather.description, model.mainInfo.temperature,
-                weatherUnitFormat, weather.icon, model.wind.speed, WindDirection.getWindDirectionByDegree(model.wind.degrees))
+        return Weather(weather.id, weatherUnitFormat, weather.type, weather.description, model.mainInfo.temperature,
+                weather.icon, model.wind.speed, model.wind.degrees)
     }
 }

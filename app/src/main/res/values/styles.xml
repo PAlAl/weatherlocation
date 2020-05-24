@@ -5,6 +5,12 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:windowBackground">@color/white</item>
+        <item name="android:textColor">@color/black_700</item>
+        <item name="android:textColorPrimary">@color/black_700</item>
+        <item name="android:textColorSecondary">@color/black_700</item>
+
+        <item name="dividerColor">@color/grey_500</item>
+        <item name="dividerWidth">2dp</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme" />

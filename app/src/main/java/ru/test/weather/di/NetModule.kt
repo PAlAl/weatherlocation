@@ -63,4 +63,8 @@ class NetModule {
     @Provides
     @Named("SERVER_URL")
     fun provideServerUrl(): String = BuildConfig.SERVER_URL
+
+    @Provides
+    @Named("IMAGES_URL")
+    fun provideImagesUrl(): String = BuildConfig.IMAGES_URL
 }

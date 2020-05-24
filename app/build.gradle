@@ -21,11 +21,13 @@ android {
         debug {
             buildConfigField "Boolean", "CHUCK_ENABLE", 'true'
             buildConfigField "String", "SERVER_URL", '"https://api.openweathermap.org/data/2.5/"'
+            buildConfigField "String", "IMAGES_URL", '"https://openweathermap.org/img/wn/"'
             buildConfigField "String", "API_KEY", '"4e3e17709ac2bf2ca047ed8f1a6002e7"'
         }
         release {
             buildConfigField "Boolean", "CHUCK_ENABLE", 'false'
             buildConfigField "String", "SERVER_URL", '"https://api.openweathermap.org/data/2.5/"'
+            buildConfigField "String", "IMAGES_URL", '"https://openweathermap.org/img/wn/"'
             buildConfigField "String", "API_KEY", '"4e3e17709ac2bf2ca047ed8f1a6002e7"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -67,7 +69,7 @@ dependencies {
     //Http
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.7.1"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
     //Glide
     kapt("com.github.bumptech.glide:compiler:$glide_version")
