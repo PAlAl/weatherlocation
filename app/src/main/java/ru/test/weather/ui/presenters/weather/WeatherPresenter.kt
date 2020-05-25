@@ -2,6 +2,7 @@ package ru.test.weather.ui.presenters.weather
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.pm.PackageManager
+import com.google.android.gms.location.LocationCallback
 import ru.test.weather.R
 import ru.test.weather.domain.interactors.weather.IWeatherInteractor
 import ru.test.weather.domain.models.Optional
@@ -16,6 +17,8 @@ import ru.test.weather.ui.global.eventBus.IBusNotifier
 import ru.test.weather.ui.global.eventBus.permissions.CheckPermissionEvent
 import ru.test.weather.ui.global.eventBus.permissions.PermissionResultEvent
 import ru.test.weather.ui.global.eventBus.permissions.RequestPermissionEvent
+import ru.test.weather.ui.global.location.WeatherLocationConfigurator
+import ru.test.weather.ui.global.location.WeatherLocationManager
 import ru.test.weather.ui.presenters.BasePresenter
 import ru.test.weather.ui.views.weather.models.WeatherNoDataViewModel
 import ru.test.weather.ui.views.weather.models.WeatherViewModelMapper
@@ -24,20 +27,24 @@ import javax.inject.Named
 
 class WeatherPresenter @Inject constructor(private val interactor: IWeatherInteractor, private val schedulers: ISchedulersProvider,
                                            @Named("IMAGES_URL") private val imagesUrl: String, private val eventBus: IBus,
-                                           private val busNotifier: IBusNotifier) : BasePresenter<IWeatherView>() {
+                                           private val busNotifier: IBusNotifier,
+                                           private val locationManager: WeatherLocationManager,
+                                           private val locationConfigurator: WeatherLocationConfigurator) : BasePresenter<IWeatherView>() {
 
-    private val imageSizePostfix = "@4x"
-    private val imageExtension = ".png"
+    private var isRefresh = false
+    private val locationCallback: LocationCallback = locationConfigurator.getLocationCallback({
+        loadWeather(it.latitude, it.longitude)
+    }, { })
 
     override fun onFirstViewAttach() {
         busNotifier.busEvents.subscribeDispose({ event ->
             when (event) {
                 is PermissionResultEvent -> {
                     if (event.requestCode == LOCATION_PERMISSIONS_REQUEST_CODE)
-                        if (event.grantResult == PackageManager.PERMISSION_GRANTED) {
-                        } else {
+                        if (event.grantResult == PackageManager.PERMISSION_GRANTED)
+                            getCurrentLocationAndLoad()
+                        else
                             showNoLocationPermissionError()
-                        }
                 }
             }
         })
@@ -45,19 +52,23 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
         checkPermissionAndLoad()
     }
 
-    fun onRefreshClick() {
-        checkPermissionAndLoad(true)
+    override fun onDestroy() {
+        locationManager.removeLocationUpdates(locationCallback)
+        super.onDestroy()
     }
 
-    private fun checkPermissionAndLoad(isRefresh: Boolean = false) {
-        eventBus.notifyBus(
-                CheckPermissionEvent(ACCESS_FINE_LOCATION) { isPermissionAllowed ->
-                    if (!isPermissionAllowed)
-                        requestLocationPermission()
-                    else
-                        loadWeather(isRefresh)
-                }
-        )
+    fun onRefreshClick() {
+        isRefresh = true
+        checkPermissionAndLoad()
+    }
+
+    private fun checkPermissionAndLoad() {
+        eventBus.notifyBus(CheckPermissionEvent(ACCESS_FINE_LOCATION) { isPermissionAllowed ->
+            if (!isPermissionAllowed)
+                requestLocationPermission()
+            else
+                getCurrentLocationAndLoad()
+        })
     }
 
     private fun requestLocationPermission() {
@@ -66,13 +77,20 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
                 R.string.gps_request_dialog_cancel, R.string.gps_request_dialog_ok))
     }
 
-    private fun loadWeather(isRefresh: Boolean) {
-        interactor.loadWeather(WeatherPoint(55.06179327422091F, 38.74023914337159F), isRefresh)
+    private fun getCurrentLocationAndLoad() {
+        locationManager.getLocation(locationConfigurator.getDefaultLocationRequest(), locationCallback)
+    }
+
+    private fun loadWeather(latitude: Double, longitude: Double) {
+        locationManager.removeLocationUpdates(locationCallback)
+
+        interactor.loadWeather(WeatherPoint(latitude, longitude), isRefresh)
                 .observeOn(schedulers.ui())
                 .doOnSubscribe {
                     viewState.changeBlockingProgress(true)
                 }
                 .doAfterTerminate {
+                    isRefresh = false
                     viewState.changeBlockingProgress(false)
                 }
                 .subscribeDispose({
@@ -114,7 +132,7 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
         }
     }
 
-    private fun getImageUrl(iconPath: String): String {
+    private fun getImageUrl(iconPath: String, imageSizePostfix: String = "@4x", imageExtension: String = ".png"): String {
         return "$imagesUrl${iconPath}$imageSizePostfix$imageExtension"
     }
 
