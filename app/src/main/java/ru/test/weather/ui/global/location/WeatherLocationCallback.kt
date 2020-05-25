@@ -5,14 +5,15 @@ import com.google.android.gms.location.LocationAvailability
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 
-class WeatherLocationCallback(private val onSuccess: (Location) -> Unit, private val onFailed: () -> Unit) : LocationCallback() {
+class WeatherLocationCallback(private val onSuccess: (Location) -> Unit,
+                              private val onFailed: (locationAvailability: LocationAvailability?) -> Unit) : LocationCallback() {
     override fun onLocationResult(location: LocationResult?) {
         location?.let {
             onSuccess(it.lastLocation)
         }
     }
 
-    override fun onLocationAvailability(p0: LocationAvailability?) {
-        onFailed()
+    override fun onLocationAvailability(locationAvailability: LocationAvailability?) {
+        onFailed(locationAvailability)
     }
 }

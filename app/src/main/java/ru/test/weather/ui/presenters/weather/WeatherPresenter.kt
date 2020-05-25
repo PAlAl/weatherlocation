@@ -38,7 +38,11 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
         loadWeather(it.latitude, it.longitude)
         clearLocationCallback()
     }, {
-        errorHandler.proceed(R.string.weather_no_location_error)
+        it?.let {
+            if (!it.isLocationAvailable)
+                errorHandler.proceed(R.string.weather_no_location_error)
+        }
+
         clearLocationCallback()
     })
 
