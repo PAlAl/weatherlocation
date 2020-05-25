@@ -7,4 +7,5 @@ import ru.test.weather.domain.models.weather.Weather
 
 interface IWeatherInteractor {
     fun loadWeather(locationPoint: WeatherPoint, isRefresh: Boolean): Single<Optional<Weather>>
+    fun getWeather(): Optional<Weather>
 }

@@ -13,6 +13,13 @@ import javax.inject.Inject
 class WeatherInteractor @Inject constructor(private val config: IWeatherInteractorConfig,
                                             private val repository: IWeatherRepository) : IWeatherInteractor {
 
+    override fun getWeather(): Optional<Weather> {
+        return if (isNeedUpdateByLastLoadDateTime(getLastLoadDateTime()))
+            Optional.None
+        else
+            repository.getWeatherFromCache()
+    }
+
     override fun loadWeather(locationPoint: WeatherPoint, isRefresh: Boolean): Single<Optional<Weather>> {
         return if (isRefresh || isNeedUpdateByLastLoadDateTime(getLastLoadDateTime()))
             repository.loadWeather(locationPoint, WeatherUnitFormat.Metric, Language.Ru)

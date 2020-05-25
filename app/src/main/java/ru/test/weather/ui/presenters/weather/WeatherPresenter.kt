@@ -59,7 +59,10 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
             }
         })
 
-        checkPermissionAndLoad()
+        when (val weather = interactor.getWeather()) {
+            is Optional.Some -> updateData(weather.data)
+            is Optional.None -> checkPermissionAndLoad()
+        }
     }
 
     override fun onDestroy() {
