@@ -48,9 +48,9 @@ class NetModule {
     @Provides
     fun provideOkHttp(context: Context): OkHttpClient {
         val okHttpBuilder = OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
 
         okHttpBuilder.addInterceptor(WeatherAuthInterceptor(BuildConfig.API_KEY))
 
