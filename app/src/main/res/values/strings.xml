@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Weather</string>
 
+    <!--Infrastructure-->
+    <string name="toast_button_title">OK</string>
+
     <string name="gps_request_dialog_title">Разрешить ресурсу "Погода" доступ к вашей геопозиции?</string>
     <string name="gps_request_dialog_message">Так мы сможем определить погоду в вашем регионе</string>
     <string name="gps_request_dialog_cancel">Нет</string>
@@ -13,6 +16,7 @@
     <string name="weather_no_data_action">Обновить</string>
     <string name="weather_no_location_permission_title">Не удалось получить разрешение на определение геопозиции</string>
     <string name="weather_no_location_permission_action">Настройки приложения</string>
+    <string name="weather_no_location_error">Не удалось определить местоположение</string>
 
     <!--WindDirection enum-->
     <string name="enum_wind_direction_northern">c</string>
@@ -27,5 +31,11 @@
     <!--WindUnit enum-->
     <string name="enum_wind_unit_meter_by_second">м/с</string>
     <string name="enum_wind_unit_miles_by_hour">миль/ч</string>
+
+    <!--region Errors Messages -->
+    <string name="error_net_work">Ошибка соединения, проверьте интернет</string>
+    <string name="error_other">Произошла ошибка, попробуйте позже</string>
+    <string name="error_google_api_services">Google Api Services не поддерживаются устройством</string>
+    <!--endregion-->
 
 </resources>

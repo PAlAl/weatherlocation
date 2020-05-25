@@ -5,6 +5,7 @@ import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.OneExecutionStateStrategy
 import moxy.viewstate.strategy.StateStrategyType
+import ru.test.weather.ui.global.eventBus.systemMessages.SystemMessageEvent
 
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface IMainView : MvpView {
@@ -18,6 +19,12 @@ interface IMainView : MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun openWeatherScreen()
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showError(message: String)
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showErrorByRes(@StringRes messageRes: Int)
 
     fun checkGoogleApiAvailability()
 }

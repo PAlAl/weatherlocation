@@ -2,4 +2,5 @@
 <resources>
     <attr name="dividerColor" format="reference"/>
     <attr name="dividerWidth" format="dimension"/>
+    <attr name="toastTextColor" format="reference"/>
 </resources>

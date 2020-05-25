@@ -12,6 +12,7 @@ import ru.test.weather.domain.models.weather.types.WeatherTemperatureUnit
 import ru.test.weather.domain.models.weather.types.WindDirection
 import ru.test.weather.domain.system.ISchedulersProvider
 import ru.test.weather.ui.global.LOCATION_PERMISSIONS_REQUEST_CODE
+import ru.test.weather.ui.global.errors.IErrorHandler
 import ru.test.weather.ui.global.eventBus.IBus
 import ru.test.weather.ui.global.eventBus.IBusNotifier
 import ru.test.weather.ui.global.eventBus.permissions.CheckPermissionEvent
@@ -29,12 +30,17 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
                                            @Named("IMAGES_URL") private val imagesUrl: String, private val eventBus: IBus,
                                            private val busNotifier: IBusNotifier,
                                            private val locationManager: WeatherLocationManager,
-                                           private val locationConfigurator: WeatherLocationConfigurator) : BasePresenter<IWeatherView>() {
+                                           private val locationConfigurator: WeatherLocationConfigurator,
+                                           private val errorHandler: IErrorHandler) : BasePresenter<IWeatherView>() {
 
     private var isRefresh = false
     private val locationCallback: LocationCallback = locationConfigurator.getLocationCallback({
         loadWeather(it.latitude, it.longitude)
-    }, { })
+        clearLocationCallback()
+    }, {
+        errorHandler.proceed(R.string.weather_no_location_error)
+        clearLocationCallback()
+    })
 
     override fun onFirstViewAttach() {
         busNotifier.busEvents.subscribeDispose({ event ->
@@ -53,7 +59,7 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
     }
 
     override fun onDestroy() {
-        locationManager.removeLocationUpdates(locationCallback)
+        clearLocationCallback()
         super.onDestroy()
     }
 
@@ -81,9 +87,11 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
         locationManager.getLocation(locationConfigurator.getDefaultLocationRequest(), locationCallback)
     }
 
-    private fun loadWeather(latitude: Double, longitude: Double) {
+    private fun clearLocationCallback() {
         locationManager.removeLocationUpdates(locationCallback)
+    }
 
+    private fun loadWeather(latitude: Double, longitude: Double) {
         interactor.loadWeather(WeatherPoint(latitude, longitude), isRefresh)
                 .observeOn(schedulers.ui())
                 .doOnSubscribe {
@@ -99,6 +107,7 @@ class WeatherPresenter @Inject constructor(private val interactor: IWeatherInter
                         is Optional.None -> showNoDataError()
                     }
                 }, {
+                    errorHandler.proceed(it)
                     showNoDataError()
                 })
     }

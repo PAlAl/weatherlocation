@@ -11,6 +11,7 @@
 
         <item name="dividerColor">@color/grey_500</item>
         <item name="dividerWidth">2dp</item>
+        <item name="toastTextColor">@color/white</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme" />
