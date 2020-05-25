@@ -19,10 +19,14 @@ class MainPresenter @Inject constructor(private val eventBus: IBus, private val 
             }
         })
 
-        viewState.openWeatherScreen()
+        viewState.checkGoogleApiAvailability()
     }
 
     fun onRequestPermissionsResult(requestCode: Int, grantResult: Int) {
         eventBus.notifyBus(PermissionResultEvent(requestCode, grantResult))
+    }
+
+    fun onCheckGoogleApiAvailabilitySuccess() {
+        viewState.openWeatherScreen()
     }
 }

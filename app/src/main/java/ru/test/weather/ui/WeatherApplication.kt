@@ -1,14 +1,13 @@
 package ru.test.weather.ui
 
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import io.realm.rx.RealmObservableFactory
 import ru.test.weather.di.AppComponent
 import ru.test.weather.di.ContextModule
 import ru.test.weather.di.DaggerAppComponent
 
-class WeatherApplication : Application() {
+class WeatherApplication : MultiDexApplication() {
 
     private lateinit var component: AppComponent
 

@@ -2,16 +2,20 @@ package ru.test.weather.ui.views
 
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import com.google.android.gms.common.ConnectionResult.SUCCESS
+import com.google.android.gms.common.GoogleApiAvailability
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import ru.test.weather.R
 import ru.test.weather.ui.WeatherApplication
+import ru.test.weather.ui.global.GOOGLE_API_AVAILABILITY_CODE
 import ru.test.weather.ui.presenters.main.IMainView
 import ru.test.weather.ui.presenters.main.MainPresenter
 import ru.test.weather.ui.views.global.DefaultDialog
@@ -31,12 +35,6 @@ class MainActivity : MvpAppCompatActivity(), IMainView {
         (application as WeatherApplication).getComponent().inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-    }
-
-    override fun openWeatherScreen() {
-        supportFragmentManager.beginTransaction()
-                .add(R.id.container, WeatherFragment())
-                .commit()
     }
 
     override fun checkPermission(permission: String, callback: (Boolean) -> Unit) {
@@ -66,5 +64,28 @@ class MainActivity : MvpAppCompatActivity(), IMainView {
 
     private fun startPermissionRequest(permission: String, code: Int) {
         requestPermissions(this, arrayOf(permission), code)
+    }
+
+    override fun checkGoogleApiAvailability() {
+        GoogleApiAvailability.getInstance().apply {
+            val googlePlayServicesAvailable = isGooglePlayServicesAvailable(this@MainActivity)
+            if (googlePlayServicesAvailable != SUCCESS) {
+                if (isUserResolvableError(googlePlayServicesAvailable)) {
+                    val errorDialog = getErrorDialog(this@MainActivity, googlePlayServicesAvailable, GOOGLE_API_AVAILABILITY_CODE)
+                    errorDialog.setOnDismissListener { finish() }
+                    errorDialog.show()
+                } else {
+                    Toast.makeText(this@MainActivity, "Un", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            } else
+                presenter.onCheckGoogleApiAvailabilitySuccess()
+        }
+    }
+
+    override fun openWeatherScreen() {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.container, WeatherFragment())
+                .commit()
     }
 }

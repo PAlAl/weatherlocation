@@ -18,4 +18,6 @@ interface IMainView : MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun openWeatherScreen()
+
+    fun checkGoogleApiAvailability()
 }
